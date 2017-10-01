@@ -1,15 +1,57 @@
 <div class="container">
+
   <div *ngFor="let room of rooms" class="card">
     <div class="card-image waves-effect waves-block waves-light">
-      <!--img class="activator" src="{{room.img}}"-->
+      <img class="activator" src="http://72.29.85.225/~admarqui/wp-content/uploads/2014/05/sala-de-juntas-adm1.jpg">
     </div>
     <div class="card-content">
-      <span class="card-title activator grey-text text-darken-4">hola<i class="material-icons right">more_vert</i></span>
-      <p><a href="#">Room meeting Bookings</a></p>
+      <span class="card-title activator grey-text text-darken-4">{{room.name}}<i class="material-icons right">more_vert</i></span>
     </div>
     <div class="card-reveal">
-      <span class="card-title grey-text text-darken-4">hola<i class="material-icons right">close</i></span>
-      <p>Here is some more information about this product that is only revealed once clicked on.</p>
+      <div class="card-title grey-text text-darken-4">Reservas para {{room.name}}<i class="material-icons right">close</i></div>
+        <div *ngFor="let booking of (room.bookings)" class="card hoverable">
+          <div class="card-content">
+            <div class="row">
+              <div class="col m9">
+               <p class="card-title">{{booking.state}}</p>
+                <p> {{booking.state}} para {{booking.start | date}} de {{booking.start | date:'shortTime'}}
+                a {{booking.end | date:'shortTime'}}</p>
+              </div>
+              <div class="col m3">
+                <a class="waves-effect waves-light btn grey darken-3" (click)="setConfirm((booking), (room))">Confirmar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <div class="card-action">
+        <form [formGroup]="bookingForm" (ngSubmit) = "createBooking((room))" novalidate>
+          <div class="row">
+            <div class="col m4">
+              <label for="datemeeting">Fecha de Reserva</label>
+              <input id="datemeeting" formControlName="datemeeting" type="text" materialize="pickadate" class="datepicker"
+                     [materializeParams]="[{format: 'yyyy-mm-dd'}]">
+            </div>
+            <div class="col m4">
+              <label for="fromtime">Hora de Inicio</label>
+              <input id="fromtime" formControlName="fromtime" type="text" materialize="pickatime" class="datepicker"
+                     [materializeParams]="[{twelvehour: false}]">
+            </div>
+            <div class="col m4">
+              <label for="totime">Hora de Finalización</label>
+              <input id="totime" formControlName="totime" type="text" materialize="pickatime" class="datepicker"
+                     [materializeParams]="[{twelvehour: false}]">
+            </div>
+            <div >
+              <button type="submit" [disabled]="!bookingForm.valid" class="waves-effect waves-light btn grey darken-3">Reservar</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
+  <div class="fixed-action-btn horizontal">
+    <a class="btn-floating btn-large grey darken-3 waves-effect waves-light" (click)="createRoom()" data-position="left" data-tooltip="Crear nueva sala" materialize="tooltip">
+      <i class="large material-icons">add</i>
+    </a>
   </div>
 </div>

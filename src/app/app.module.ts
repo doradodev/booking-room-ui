@@ -7,6 +7,7 @@ import {RouterModule, Routes} from "@angular/router";
 import {MaterializeModule} from "angular2-materialize";
 import {BookingRoomService} from "./services/booking-room.service";
 import {HttpModule} from "@angular/http";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 const appRoutes: Routes = [
   {path: '', component : BookingRoomComponent}
@@ -21,7 +22,9 @@ const appRoutes: Routes = [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     MaterializeModule,
-    HttpModule
+    HttpModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [BookingRoomService],
   bootstrap: [AppComponent]
