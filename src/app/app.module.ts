@@ -9,9 +9,22 @@ import {BookingRoomService} from "./services/booking-room.service";
 import {HttpModule} from "@angular/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+
 const appRoutes: Routes = [
   {path: '', component : BookingRoomComponent}
 ];
+
+export const firebaseConfig = {
+
+  apiKey: "AIzaSyDZHTESFgkSHSuhAsbXx3jor8Dw0FhPtC0",
+  authDomain: "booking-room-4788a.firebaseapp.com",
+  databaseURL: "https://booking-room-4788a.firebaseio.com",
+  storageBucket: "booking-room-4788a.appspot.com",
+  messagingSenderId: "39363426004"
+};
 
 @NgModule({
   declarations: [
@@ -24,7 +37,11 @@ const appRoutes: Routes = [
     MaterializeModule,
     HttpModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
+
   ],
   providers: [BookingRoomService],
   bootstrap: [AppComponent]

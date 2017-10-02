@@ -49,8 +49,30 @@
       </div>
     </div>
   </div>
+  <div id="modal2" class="modal bottom-sheet" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions2">
+    <div class="modal-content">
+      <form [formGroup]="roomForm" (ngSubmit) = "createRoom()" novalidate>
+        <div class="row">
+          <div class="col m12">
+            <label for="name">Nombre de la sala</label>
+            <input id="name" formControlName="name" type="text">
+          </div>
+          <div class="col m12">
+            <label for="capacity">Capacidad</label>
+            <input id="capacity" formControlName="capacity" type="number">
+          </div>
+          <div >
+            <button type="submit" [disabled]="!roomForm.valid" class="waves-effect waves-light btn grey darken-3">Crear sala</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a class="waves-effect waves-green btn-flat" (click)="closeModal2()">Close</a>
+    </div>
+  </div>
   <div class="fixed-action-btn horizontal">
-    <a class="btn-floating btn-large grey darken-3 waves-effect waves-light" (click)="createRoom()" data-position="left" data-tooltip="Crear nueva sala" materialize="tooltip">
+    <a class="btn-floating btn-large grey darken-3 waves-effect waves-light" (click)="openModal2()" data-position="left" data-tooltip="Crear nueva sala" materialize="tooltip">
       <i class="large material-icons">add</i>
     </a>
   </div>

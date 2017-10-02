@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {Room} from "../models/room.model";
 import {BookingRoomService} from "../services/booking-room.service";
-import {Observable} from "rxjs/Observable";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Booking} from "../models/booking.model";
+import {MaterializeAction} from "angular2-materialize";
 
 @Component({
   selector: 'app-booking-room',
@@ -14,14 +14,24 @@ export class BookingRoomComponent implements OnInit {
 
   rooms = null;
   bookingForm : FormGroup;
+  roomForm : FormGroup;
   booking: Booking;
+
+  modalActions2 = new EventEmitter<string|MaterializeAction>();
 
   constructor(private bookingService : BookingRoomService, private fb: FormBuilder) {
     this.booking = new Booking('',new Date(),new Date(),'');
+    let book: Array<Booking>[];
+     let room = new Room(0,'',0,book,'');
     this.bookingForm = this.fb.group({
         datemeeting: ['', [Validators.required]],
         fromtime: ['', [Validators.required]],
         totime: ['', [Validators.required]]
+    });
+
+    this.roomForm = this.fb.group({
+      name: ['',[Validators.required]],
+      capacity: ['',[Validators.required]]
     });
   }
 
@@ -36,52 +46,33 @@ export class BookingRoomComponent implements OnInit {
 
     let bookingNew = this.bookingForm.value;
     room.bookings.push({'idBooking':null,
-                        'start': new Date(bookingNew.datemeeting +'T'+ bookingNew.fromtime+'Z'),
-                        'end':new Date(bookingNew.datemeeting +'T'+ bookingNew.totime+'Z'),
+                        'start': new Date(bookingNew.datemeeting +'T'+ bookingNew.fromtime+'Z').getTime(),
+                        'end':new Date(bookingNew.datemeeting +'T'+ bookingNew.totime+'Z').getTime(),
                         'state':'SOLICITADA'});
-    let room2 = {
-      "idRoom":1,
-      "bookings": [
-      {
-        "end": "2017-10-01T19:30:12Z",
-        "start": "2017-10-01T20:27:12.075Z",
-        "state": "SOLICITADA"
-      }
-    ],
-      "capacity": 50,
-      "name": "principal room2"
-    }
 
-    this.bookingService.updateBooking(room2)
+    this.bookingService.updateBooking(room)
   }
 
   createRoom(){
-    let room3 = {
-
-      "bookings": [
-        {
-          "end": "2017-10-01T19:30:12Z",
-          "start": "2017-10-01T20:27:12.075Z",
-          "state": "SOLICITADA"
-        }
-      ],
-      "capacity": 50,
-      "name": "principal room3"
+    console.log("create")
+    let roomNew = this.roomForm.value;
+    let room = {
+      'name': roomNew.name,
+      'capacity': roomNew.capacity
     }
-    this.bookingService.createRoom(room3);
+    this.bookingService.createRoom(room);
   }
 
   setConfirm(bookingConfirm : Booking, room){
-
     bookingConfirm.state = 'CONFIRMADA';
-    //bookingConfirm.start = new Date(bookingConfirm.start);
-    //bookingConfirm.end = new Date(bookingConfirm.end);
-
-    console.log(bookingConfirm);
-    console.log(room);
-
-
     this.bookingService.updateBooking(room);
+  }
+
+  openModal2() {
+    this.modalActions2.emit({action:"modal",params:['open']});
+  }
+  closeModal2() {
+    this.modalActions2.emit({action:"modal",params:['close']});
   }
 
 }
