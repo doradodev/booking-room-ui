@@ -34,25 +34,41 @@ export class BookingRoomComponent implements OnInit {
 
   createBooking(room){
 
-    console.log(room);
-
     let bookingNew = this.bookingForm.value;
-    console.log(bookingNew);
+    room.bookings.push({'idBooking':null,
+                        'start': new Date(bookingNew.datemeeting +'T'+ bookingNew.fromtime+'Z'),
+                        'end':new Date(bookingNew.datemeeting +'T'+ bookingNew.totime+'Z'),
+                        'state':'SOLICITADA'});
+    let room2 = {
+      "idRoom":1,
+      "bookings": [
+      {
+        "end": "2017-10-01T19:30:12Z",
+        "start": "2017-10-01T20:27:12.075Z",
+        "state": "SOLICITADA"
+      }
+    ],
+      "capacity": 50,
+      "name": "principal room2"
+    }
 
-    let start = bookingNew.datemeeting +'T'+ bookingNew.fromtime+'Z';
-    let end = bookingNew.datemeeting +'T'+ bookingNew.totime+'Z';
-    let date = new Date(start);
-    let newBooking = new Booking(null, new Date(bookingNew.datemeeting +'T'+ bookingNew.fromtime+'Z'),
-                                  new Date(bookingNew.datemeeting +'T'+ bookingNew.totime+'Z'),'SOLICITADA');
-
-    room.bookings.push({'idBooking':null,'start': new Date(bookingNew.datemeeting +'T'+ bookingNew.fromtime+'Z'),
-      'end':new Date(bookingNew.datemeeting +'T'+ bookingNew.totime+'Z'),'state':'SOLICITADA'});
-
-    this.bookingService.updateBooking(room)
+    this.bookingService.updateBooking(room2)
   }
 
   createRoom(){
+    let room3 = {
 
+      "bookings": [
+        {
+          "end": "2017-10-01T19:30:12Z",
+          "start": "2017-10-01T20:27:12.075Z",
+          "state": "SOLICITADA"
+        }
+      ],
+      "capacity": 50,
+      "name": "principal room3"
+    }
+    this.bookingService.createRoom(room3);
   }
 
   setConfirm(bookingConfirm : Booking, room){

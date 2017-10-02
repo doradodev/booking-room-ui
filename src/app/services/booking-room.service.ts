@@ -19,11 +19,17 @@ export class BookingRoomService {
     return this.http.post(this.BASE_URL+'findAll', this.headers);
   }
 
-  public updateBooking(room: Room){
+  public updateBooking(room){
 
     console.log(room)
     console.log(`${this.BASE_URL}${room['idRoom']}`);
+    console.log(this.BASE_URL+room.idRoom);
     return this.http.put(`${this.BASE_URL}${room['idRoom']}` , room, this.options)
+    //return this.http.put(this.BASE_URL+'{'+room.idRoom+'}', room, this.options);
+  }
+
+  public createRoom(room){
+    return this.http.post(this.BASE_URL, room, this.options);
   }
 
 }
